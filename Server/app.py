@@ -41,7 +41,21 @@ def test():
 def add_film():
     if not request.json:
         abort(400)
-
+    if "MovieID" in request.json:
+        movie_id = request.json['MovieID']
+    else:
+        #movie_id = None
+        abort(403) #movie must have an identifier
+    if "Title" in request.json:
+        movie_title = request.json['Title']
+    else:
+        movie_title = None #strangely I've decided a movie does not necessarily need a name
+    if "RatingID" in request.json:
+        rating_id = request.json['RatingID']
+        abort(403) #movie must have a rating
+    else:
+        rating_id = None
+    cursor.execute(queries.insert_movie, (movie_id, movie_title, rating_id))
     return request.json
 
 '''
