@@ -26,14 +26,12 @@ cursor = conn.cursor()
 '''
 @app.route('/', methods=['GET'])
 def test():
-    print("Hello Terminal")
-    cursor.execute(queries.insert_movie)
+    cursor.execute(queries.select_all_movie)
     query_result = cursor.fetchall()
     column_names = [i[0] for i in cursor.description]
-    print(column_names)
-    for row in query_result:
-        print(row)
-    
+    # print(column_names)
+    # for row in query_result:
+    #     print(row)
     return jsonify(columns=column_names,data=query_result)
 
 '''
