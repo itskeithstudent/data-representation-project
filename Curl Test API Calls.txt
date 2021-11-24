@@ -1,0 +1,12 @@
+
+#Problem post request, doesn't have correct keys
+curl -i -H "Content-Type:application/json" -X POST -d "{\"reg\":\"12\"}" http://localhost:5000/
+
+#Working post request
+curl -i -H "Content-Type:application/json" -X POST -d "{\"MovieID\":\"10\",\"RatingID\":10}" http://localhost:5000/
+
+#Test GET request
+curl -i -H "Content-Type:application/json" -X GET http://localhost:5000/
+
+#Test PUT request
+curl -i -H "Content-Type:application/json" -X PUT -d "{\"MovieID\":\"10\",\"Title\":\"RAN\",\"RatingID\":10}" http://localhost:5000/
