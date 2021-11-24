@@ -8,26 +8,27 @@ from flask_cors import CORS
 import mysql.connector
 
 import queries
-import dbconfig as conf
+import moviedao
+#import dbconfig as conf
 
 app = Flask(__name__)
 
 #initialise connection
-conn = mysql.connector.connect(
+'''conn = mysql.connector.connect(
     host=conf.mysql['host'],
     user=conf.mysql['user'],
     password=conf.mysql['password'],
     database=conf.mysql['database']
-)
+)'''
 #create cursor object
-cursor = conn.cursor()
+test_dao = moviedao.Moviedao()
 
 '''
     TODO - Add html to GET data and populate a table with response
 '''
 @app.route('/', methods=['GET'])
 def test():
-    #cursor.execute(queries.select_all_movie_plus_rating)
+    cursor = test_dao.cursor # test the cursor object
     cursor.execute(queries.select_all_movie)
     query_result = cursor.fetchall()
     column_names = [i[0] for i in cursor.description]
