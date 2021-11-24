@@ -17,6 +17,11 @@ class Moviedao:
         results = self.cursor.fetchall()
         column_names = [i[0] for i in self.cursor.description]
         return column_names, results
+    
+    def add_movie(self, values):
+        self.cursor.execute(queries.insert_movie, values)
+        rowcount = self.cursor.rowcount
+        return rowcount
 
     def __repr__(self):
         return "Database access object for querying, inserting, updating and deleting tables relating to movies"

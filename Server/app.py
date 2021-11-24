@@ -51,8 +51,8 @@ def add_movie():
         rating_id = request.json['RatingID']
     else:
         abort(403) #movie must have a rating
-    cursor.execute(queries.insert_movie, (movie_id, movie_title, rating_id))
-    return request.json
+    row_added = movie_dao.add_movie((movie_id, movie_title, rating_id))
+    return str(row_added)
 
 '''
     TODO - Add POST and DELETE methods for different functions and add html functionality
