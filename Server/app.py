@@ -21,14 +21,14 @@ app = Flask(__name__)
     database=conf.mysql['database']
 )'''
 #create cursor object
-test_dao = moviedao.Moviedao()
+movie_dao = moviedao.Moviedao()
 
 '''
     TODO - Add html to GET data and populate a table with response
 '''
 @app.route('/', methods=['GET'])
 def get_movie():
-    column_names, query_results = test_dao.get_all_movies()
+    column_names, query_results = movie_dao.get_all_movies()
     return jsonify(columns=column_names,data=query_results)
 
 '''
