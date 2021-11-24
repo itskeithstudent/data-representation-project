@@ -10,6 +10,6 @@ FROM MOVIES m INNER JOIN RATING r ON m.RatingID = r.RatingID;'''
 
 update_movie = '''UPDATE MOVIES
 SET
-Title=%s
+Title=%s,
 RatingID=%s
 WHERE MovieID=%s;'''
