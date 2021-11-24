@@ -27,21 +27,15 @@ test_dao = moviedao.Moviedao()
     TODO - Add html to GET data and populate a table with response
 '''
 @app.route('/', methods=['GET'])
-def test():
-    cursor = test_dao.cursor # test the cursor object
-    cursor.execute(queries.select_all_movie)
-    query_result = cursor.fetchall()
-    column_names = [i[0] for i in cursor.description]
-    # print(column_names)
-    # for row in query_result:
-    #     print(row)
-    return jsonify(columns=column_names,data=query_result)
+def get_movie():
+    column_names, query_results = test_dao.get_all_movies()
+    return jsonify(columns=column_names,data=query_results)
 
 '''
     TODO - Add html form to add a new film, like done in labs
 '''
 @app.route('/', methods=['POST'])
-def add_film():
+def add_movie():
     if not request.json:
         abort(400)
     if "MovieID" in request.json:
@@ -64,7 +58,7 @@ def add_film():
     TODO - Add POST and DELETE methods for different functions and add html functionality
 '''
 @app.route('/', methods=['PUT'])
-def update_film():
+def update_movie():
     if not request.json:
         abort(400)
     if "MovieID" in request.json:
