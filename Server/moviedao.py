@@ -17,11 +17,26 @@ class Moviedao:
         results = self.cursor.fetchall()
         column_names = [i[0] for i in self.cursor.description]
         return column_names, results
-    
+
     def add_movie(self, values):
         self.cursor.execute(queries.insert_movie, values)
         rowcount = self.cursor.rowcount
         return rowcount
+
+    def update_movie(self, values):
+        try:
+            self.cursor.execute(queries.update_movie, values)
+            rowcount = self.cursor.rowcount
+            return rowcount
+        except mysql.connector.Error as e:
+            print("Hit some issue")
+            print(e)
+            print(self.cursor.statement)
+            return str(e)
+        except Exception as e:
+            print("Hit some other weirder issue")
+            print(e)
+            return str(e)
 
     def __repr__(self):
         return "Database access object for querying, inserting, updating and deleting tables relating to movies"

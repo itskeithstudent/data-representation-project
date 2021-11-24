@@ -73,16 +73,10 @@ def update_movie():
         rating_id = request.json['RatingID']
     else:
         abort(403) #movie must have a rating
-    try:
-        cursor.execute(queries.update_movie, ( movie_title, rating_id, movie_id))
-    except mysql.connector.Error as e:
-        print("Hit some issue")
-        print(e)
-        print(cursor.statement)
-    except Exception as e:
-        print("Hit some other weirder issue")
-        print(e)
-    return request.json
+
+    response = movie_dao.update_movie(( movie_title, rating_id, movie_id))
+
+    return str(response)
 
 
 
