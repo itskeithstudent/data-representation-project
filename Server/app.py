@@ -8,15 +8,16 @@ from flask_cors import CORS
 import mysql.connector
 
 import queries
+import dbconfig as conf
 
 app = Flask(__name__)
 
 #initialise connection
 conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="G00387816_DataRepProject"
+    host=conf.mysql['host'],
+    user=conf.mysql['user'],
+    password=conf.mysql['password'],
+    database=conf.mysql['database']
 )
 #create cursor object
 cursor = conn.cursor()
