@@ -36,6 +36,7 @@ def get_movie():
 '''
 @app.route('/movies', methods=['POST'])
 def add_movie():
+    print(request.json)
     if not request.json:
         abort(400)
     if "MovieID" in request.json:

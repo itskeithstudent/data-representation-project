@@ -35,6 +35,7 @@ class Moviedao:
     #Adds single movie to movies table
     def add_movie(self, values):
         self.cursor.execute(queries.insert_movie, values)
+        print(self.cursor.statement)
         self.conn.commit()
         rowcount = self.cursor.rowcount
         return rowcount
