@@ -13,13 +13,6 @@ import moviedao
 
 app = Flask(__name__)
 
-#initialise connection
-'''conn = mysql.connector.connect(
-    host=conf.mysql['host'],
-    user=conf.mysql['user'],
-    password=conf.mysql['password'],
-    database=conf.mysql['database']
-)'''
 #create cursor object
 movie_dao = moviedao.Moviedao()
 
@@ -78,7 +71,16 @@ def update_movie():
 
     return str(response)
 
-
+@app.route('/', methods=['DELETE'])
+def delete_movie():
+    if not request.json:
+        abort(400)
+    if "MovieID" in request.json:
+        movie_id = request.json['MovieID']
+    else:
+        abort(400)
+    response = movie_dao.delete_movie(movie_id)
+    return str(response)
 
 if __name__ == '__main__':
     app.run(debug=True)

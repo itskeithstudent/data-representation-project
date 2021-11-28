@@ -41,6 +41,23 @@ class Moviedao:
             self.cursor.execute(queries.update_movie, values)
             self.conn.commit() #save result back to database
             rowcount = self.cursor.rowcount
+            print(self.cursor.statement)
+            return rowcount
+        except mysql.connector.Error as e:
+            print(f"Hit the follow mysql error: {e}")
+            print(self.cursor.statement)
+            print(self.cursor.statement)
+            return str(e)
+        except Exception as e:
+            print(f"Hit some non-specific error: {e}")
+            return str(e)
+
+    #Update existing movie in Movies table
+    def delete_movie(self, movie_id):
+        try:
+            self.cursor.execute(queries.delete_movie, [movie_id])
+            self.conn.commit() #save result back to database
+            rowcount = self.cursor.rowcount
             return rowcount
         except mysql.connector.Error as e:
             print(f"Hit the follow mysql error: {e}")
