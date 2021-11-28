@@ -26,7 +26,11 @@ class Moviedao:
         self.cursor.execute(queries.select_all_movie)
         results = self.cursor.fetchall()
         column_names = [i[0] for i in self.cursor.description]
-        return column_names, results
+        row_results = []
+        for row in results:
+            row_dict = dict(zip(column_names,row))
+            row_results.append(row_dict)
+        return row_results
 
     #Adds single movie to movies table
     def add_movie(self, values):

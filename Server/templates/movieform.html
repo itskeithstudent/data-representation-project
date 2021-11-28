@@ -1,0 +1,140 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>
+        Test get all!
+    </title>
+    <link rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous">
+    <style>
+        div {padding: 10}
+    </style>
+</head>
+    <div id="btn-div">
+        <button onclick="getAll()">Get all movies</button>
+        <button onclick="addMovie()">Add new movie</button>
+        <button onclick="updateMovie()">Update movie</button>
+        <button onclick="deleteMovie()">Delete movie</button>
+    </div>
+    <div id="output">
+        <table id="movieTable" border=2>
+            <tr>
+                <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>price</th><th></th><th></th>
+            </tr>
+        </table>
+    </div>
+    
+    <script>
+        function getAll(){
+            $.ajax({
+                "url": "http://127.0.0.1:5000/movies",
+                "method":"GET",
+                "data":"",
+                "datatype":"JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    for (item of result.data){
+                        console.log(item);
+                        addMovieToTable(item);
+                    }
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        };
+
+        function addMovieToTable(movie){
+			var table = document.getElementById('movieTable'); //grab the table to insert data to
+			var row = table.insertRow(-1); //append row to end of table
+            console.log(movie)
+			row.setAttribute('id', movie.MovieId);
+			var cell0 = row.insertCell(0);
+			console.log("here");
+			cell0.innerHTML = movie.MovieID;
+			console.log(cell0);
+			var cell1 = row.insertCell(1);
+			cell1.innerHTML = movie.Title;
+			var cell2 = row.insertCell(2);
+			cell2.innerHTML = movie.RatingID;
+			var cell3 = row.insertCell(3);
+			cell3.innerHTML = movie.Title;
+			var cell3 = row.insertCell(4);
+			cell3.innerHTML = '<td><button onclick="showUpdate(this)">update</button></td>'
+			var cell3 = row.insertCell(5);
+			cell3.innerHTML = '<td><button onclick="doDelete(this)">Delete</button></td>'
+
+		}
+
+        function createCar(){
+            car = {"reg":"123XYZ", "make":"Test", "model":"TestModel", "price":111};
+            $.ajax({
+                "url": "http://127.0.0.1:5000/cars",
+                "method":"POST",
+                "data":JSON.stringify(car),
+                "datatype":"JSON",
+                "contentType": "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    console.log(result.car.make);
+                    // for (var key in result.car){
+                    //     console.log(key);
+                    //     document.getElementById("output").innerText = document.getElementById("output").innerText + " " + key + ":" + result.car[key];
+                    // }
+                    document.getElementById("output").innerText = JSON.stringify(result);
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        }
+
+        function updateCar(){
+            car = {"reg":"123XYZ", "make":"UpdateMake", "model":"UpdateMod", "price":10101};
+            $.ajax({
+                "url": "http://127.0.0.1:5000/cars/" + encodeURI(car.reg),
+                "method":"PUT",
+                "data":JSON.stringify(car),
+                "datatype":"JSON",
+                "contentType": "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    console.log(result.car.make);
+                    // for (var key in result.car){
+                    //     console.log(key);
+                    //     document.getElementById("output").innerText = JSON.stringify(result);
+                    // }
+                    document.getElementById("output").innerText = JSON.stringify(result);
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        }
+
+        function deleteCar(){
+            car = {"reg":"123XYZ"};
+            $.ajax({
+                "url": "http://127.0.0.1:5000/cars/" + encodeURI(car.reg),
+                "method":"DELETE",
+                "data":"",
+                "datatype":"JSON",
+                "contentType": "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    // for (var key in result.car){
+                    //     console.log(key);
+                    //     document.getElementById("output").innerText = JSON.stringify(result);
+                    // }
+                    document.getElementById("output").innerText = JSON.stringify(result);
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        }
+    </script>
+</html>

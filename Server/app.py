@@ -11,23 +11,30 @@ import queries
 import moviedao
 #import dbconfig as conf
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='./templates/',
+            template_folder='./templates/')
 
 #create cursor object
 movie_dao = moviedao.Moviedao()
 
+@app.route('/', methods=['GET'])
+def default_page():
+    return render_template('movieform.html')
+
 '''
     TODO - Add html to GET data and populate a table with response
 '''
-@app.route('/', methods=['GET'])
+@app.route('/movies', methods=['GET'])
 def get_movie():
-    column_names, query_results = movie_dao.get_all_movies()
-    return jsonify(columns=column_names,data=query_results)
+    query_results = movie_dao.get_all_movies()
+    return jsonify(data=query_results)
 
 '''
     TODO - Add html form to add a new film, like done in labs
 '''
-@app.route('/', methods=['POST'])
+@app.route('/movies', methods=['POST'])
 def add_movie():
     if not request.json:
         abort(400)
@@ -50,7 +57,7 @@ def add_movie():
 '''
     TODO - Add POST and DELETE methods for different functions and add html functionality
 '''
-@app.route('/', methods=['PUT'])
+@app.route('/movies', methods=['PUT'])
 def update_movie():
     if not request.json:
         abort(400)
@@ -71,7 +78,7 @@ def update_movie():
 
     return str(response)
 
-@app.route('/', methods=['DELETE'])
+@app.route('/movies', methods=['DELETE'])
 def delete_movie():
     if not request.json:
         abort(400)
