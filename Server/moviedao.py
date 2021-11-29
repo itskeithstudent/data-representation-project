@@ -40,72 +40,64 @@ class Moviedao:
 
     #Gets all movies from movies table
     def get_all_movies(self):
-        conn = self.get_connect_db()
-        cursor = conn.cursor()
-        cursor.execute(queries.select_all_movie)
-        results = cursor.fetchall()
-        #print(cursor.statement)
-        column_names = [i[0] for i in cursor.description]
-        row_results = []
-        for row in results:
-            row_dict = dict(zip(column_names,row))
-            row_results.append(row_dict)
-        conn.close()
-        #print(row_results)
-        return row_results
+        with self.get_connect_db() as conn:
+            cursor = conn.cursor()
+            cursor.execute(queries.select_all_movie)
+            results = cursor.fetchall()
+            #print(cursor.statement)
+            column_names = [i[0] for i in cursor.description]
+            row_results = []
+            for row in results:
+                row_dict = dict(zip(column_names,row))
+                row_results.append(row_dict)
+            #print(row_results)
+            return row_results
 
     #Adds single movie to movies table
     def add_movie(self, values):
-        conn = self.get_connect_db()
-        cursor = conn.cursor()
+        with self.get_connect_db() as conn:
+            cursor = conn.cursor()
 
-        cursor.execute(queries.insert_movie, values)
-        #print(cursor.statement)
-        conn.commit()
-        rowcount = cursor.rowcount
-        conn.close()
-        return rowcount
+            cursor.execute(queries.insert_movie, values)
+            #print(cursor.statement)
+            conn.commit()
+            rowcount = cursor.rowcount
+            return rowcount
 
     #Update existing movie in Movies table
     def update_movie(self, values):
-        try:
-            conn = self.get_connect_db()
-            cursor = conn.cursor()
-            cursor.execute(queries.update_movie, values)
-            conn.commit() #save result back to database
-            rowcount = cursor.rowcount
-            #print(cursor.statement)
-            conn.close()
-            return rowcount
-        except mysql.connector.Error as e:
-            print(f"Hit the follow mysql error: {e}")
-            print(cursor.statement)
-            conn.close()
-            return str(e)
-        except Exception as e:
-            conn.close()
-            print(f"Hit some non-specific error: {e}")
-            return str(e)
+        with self.get_connect_db() as conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute(queries.update_movie, values)
+                conn.commit() #save result back to database
+                rowcount = cursor.rowcount
+                #print(cursor.statement)
+                return rowcount
+            except mysql.connector.Error as e:
+                print(f"Hit the follow mysql error: {e}")
+                print(cursor.statement)
+                return str(e)
+            except Exception as e:
+                print(f"Hit some non-specific error: {e}")
+                return str(e)
 
     #Update existing movie in Movies table
     def delete_movie(self, movie_id):
-        try:
-            conn = self.get_connect_db()
-            cursor = conn.cursor()
-            cursor.execute(queries.delete_movie, [movie_id])
-            conn.commit() #save result back to database
-            rowcount = cursor.rowcount
-            conn.close()
-            return rowcount
-        except mysql.connector.Error as e:
-            print(f"Hit the follow mysql error: {e}")
-            print(cursor.statement)
-            conn.close()
-            return str(e)
-        except Exception as e:
-            conn.close()
-            print(f"Hit some non-specific error: {e}")
-            return str(e)
+        with self.get_connect_db() as conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute(queries.delete_movie, [movie_id])
+                conn.commit() #save result back to database
+                rowcount = cursor.rowcount
+                return rowcount
+            except mysql.connector.Error as e:
+                print(f"Hit the follow mysql error: {e}")
+                print(cursor.statement)
+                return str(e)
+            except Exception as e:
+                print(f"Hit some non-specific error: {e}")
+                return str(e)
 
     #__repr__ displays connection information without exposing password
     def __repr__(self):
