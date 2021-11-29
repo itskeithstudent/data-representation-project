@@ -94,11 +94,11 @@
         function addMovieToTable(movie){
 			var table = document.getElementById('movie-table'); //grab the table to insert data to
 			var row = table.insertRow(-1); //append row to end of table
-            console.log(movie)
-			row.setAttribute('id', movie.MovieId);
+            // console.log(movie);
+            // console.log(movie.MovieID);
+			row.setAttribute('id', movie.MovieID);
 			var cell0 = row.insertCell(0);
 			cell0.innerHTML = movie.MovieID;
-			console.log(cell0);
 			var cell1 = row.insertCell(1);
 			cell1.innerHTML = movie.Title;
 			var cell2 = row.insertCell(2);
@@ -106,7 +106,7 @@
 			var cell3 = row.insertCell(3);
 			cell3.innerHTML = '<td><button onclick="showUpdate(this)">update</button></td>'
 			var cell3 = row.insertCell(4);
-			cell3.innerHTML = '<td><button onclick="doDelete(this)">Delete</button></td>'
+			cell3.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
 
 		}
 
@@ -157,21 +157,19 @@
             });
         }
 
-        function deleteCar(){
-            car = {"reg":"123XYZ"};
+        function deleteMovie(btn){
+            parent_row = btn.parentNode.parentNode;
+            movie = {'MovieID': parent_row.id};
             $.ajax({
-                "url": "http://127.0.0.1:5000/cars/" + encodeURI(car.reg),
+                "url": "http://127.0.0.1:5000/movies",
                 "method":"DELETE",
-                "data":"",
+                "data":JSON.stringify(movie),
                 "datatype":"JSON",
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
-                    // for (var key in result.car){
-                    //     console.log(key);
-                    //     document.getElementById("output").innerText = JSON.stringify(result);
-                    // }
-                    document.getElementById("output").innerText = JSON.stringify(result);
+                    //After deleting element, re-execute query and populate table
+                    getAll();
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
