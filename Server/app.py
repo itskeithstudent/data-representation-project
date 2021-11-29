@@ -4,10 +4,6 @@ from flask import Flask, jsonify,  request, abort, make_response
 from flask.templating import render_template
 from flask_cors import CORS
 
-#import pymysql
-import mysql.connector
-
-import queries
 import moviedao
 #import dbconfig as conf
 
