@@ -20,7 +20,7 @@
     <div id="output">
         <table id="movie-table" border=2>
             <tr>
-                <th>Movie ID</th><th>Title</th><th>Rating ID</th><th></th><th></th>
+                <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th>
             </tr>
         </table>
     </div>
@@ -105,8 +105,12 @@
             cell.innerHTML = "Movie Title";
             row.appendChild(cell);
             cell = document.createElement("th");
-            cell.innerHTML = "Movie Rating";
+            cell.innerHTML = "Rating ID";
             row.appendChild(cell);
+            cell = document.createElement("th");
+            cell.innerHTML = "Rating";
+            row.appendChild(cell);
+            
         }
 
         function addMovieToTable(movie){
@@ -121,10 +125,12 @@
 			cell1.innerHTML = movie.Title;
 			var cell2 = row.insertCell(2);
 			cell2.innerHTML = movie.RatingID;
-			var cell3 = row.insertCell(3);
-			cell3.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">update</button></td>'
-			var cell3 = row.insertCell(4);
-			cell3.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
+            var cell3 = row.insertCell(3);
+			cell3.innerHTML = movie.Rating;
+			var cell4 = row.insertCell(4);
+			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">update</button></td>'
+			var cell5 = row.insertCell(5);
+			cell5.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
 
 		}
 

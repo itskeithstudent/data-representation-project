@@ -42,7 +42,7 @@ class Moviedao:
     def get_all_movies(self):
         with self.get_connect_db() as conn:
             cursor = conn.cursor()
-            cursor.execute(queries.select_all_movie)
+            cursor.execute(queries.select_all_movie_plus_rating)
             results = cursor.fetchall()
             column_names = [i[0] for i in cursor.description]
             row_results = []
