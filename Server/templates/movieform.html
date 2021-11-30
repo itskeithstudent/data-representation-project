@@ -14,8 +14,8 @@
 </head>
     <div id="btn-div">
         <button onclick="getAll()">Get all movies</button>
-        <button onclick="movieForm()">Add new movie</button>
-        <button onclick="updateMovie()">Update movie</button>
+        <button onclick="addMovieForm()">Add new movie</button>
+        <button onclick="updateMovieForm()">Update movie</button>
     </div>
     <div id="output">
         <table id="movie-table" border=2>
@@ -27,18 +27,43 @@
 
     <div name="form-div" id="cu-form" style="display:none">
         <h2><span id="create-label">Create a</span> <span id="update-label">Update this</span> Movie</h2>
-        Movie ID <input type="text" name="reg"><br/>
-        Rating <select name="rating">
-                <option value="Ford">Ford</option>
-                <option value="Fiat">Fiat</option>
-                <option value="Nissan">Nissan</option>
+        Movie ID <input type="text" name="movie-id" id="movie-id"><br/>
+        Rating <select name="movie-rating" id="movie-rating">
             </select><br/>
-        Title <input type="text" name="model"><br/>
+        Title <input type="text" name="movie-title" id="movie-title"><br/>
         <span><button id="do-create-btn" onclick="createMovie()">Create</button></span>
         <span><button id="do-update-btn" onclick="updateMovie()">Update</button></span>
 
     </div>
     <script>
+        //init function is for doing an initial set up to retrieve information from the Flask Server
+        //  It loads in the available rating options and populates a dropdown list with these values, for use when adding new movie
+        function init(){
+            $.ajax({
+                "url": "http://127.0.0.1:5000/ratings",
+                "method":"GET",
+                "data":"",
+                "datatype":"JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    ratingselect = document.getElementById("movie-rating")
+                    console.log(result);
+                    for (item of result.data){
+                        console.log(item);
+                        var option = document.createElement('option');
+                        option.value = item.RatingID;
+                        option.innerHTML = item.Rating;
+                        ratingselect.appendChild(option);
+                    }
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        }
+        //Immediately call init function to do initial GET request
+        init();
+
         function getAll(){
             document.getElementById("btn-div").style.display="block";
 			document.getElementById("movie-table").style.display="table";
@@ -73,7 +98,6 @@
         function addColumnToTable(){
             var table = document.getElementById('movie-table'); //grab the table to insert data to
 			var row = table.insertRow(-1); //append row to end of table
-            
             cell = document.createElement("th");
             cell.innerHTML = "Movie ID";
             row.appendChild(cell);
@@ -83,11 +107,6 @@
             cell = document.createElement("th");
             cell.innerHTML = "Movie Rating";
             row.appendChild(cell);
-            // th = document.createElement('th');
-            // th.innerHTML('Movie ID');
-            // tr = document.getElementById('table').tHead.children[0]
-            // tr.appendChild(th);
-           // row.createElement()
         }
 
         function addMovieToTable(movie){
@@ -103,29 +122,32 @@
 			var cell2 = row.insertCell(2);
 			cell2.innerHTML = movie.RatingID;
 			var cell3 = row.insertCell(3);
-			cell3.innerHTML = '<td><button onclick="showUpdate(this)">update</button></td>'
+			cell3.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">update</button></td>'
 			var cell3 = row.insertCell(4);
 			cell3.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
 
 		}
 
+        //createMovie get's called to add a new row to movie table, it creates it's json request using values from "cu-form"
         function createMovie(){
-            movie = {"MovieID":"10", "Title":"Test", "RatingID":"2"};
+            //movie = {"MovieID":"10", "Title":"Test", "RatingID":"2"};
+            movieID = document.getElementById("movie-id");
+            ratingID = document.getElementById("rating-id");
+            var movie_json = {};
+            var movie_form = document.getElementById("cu-form");
+            movie_json.MovieID = movie_form.querySelector("input[name='movie-id']").value;
+            movie_json.RatingID = movie_form.querySelector("select[name='movie-rating']").value;
+            movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
+            console.log(JSON.stringify(movie_json));
             $.ajax({
                 "url": "http://127.0.0.1:5000/movies",
                 "method":"POST",
-                "data":JSON.stringify(movie),
+                "data":JSON.stringify(movie_json),
                 "datatype":"JSON",
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
-                    //console.log(result.car.make);
-                    // for (var key in result.car){
-                    //     console.log(key);
-                    //     document.getElementById("output").innerText = document.getElementById("output").innerText + " " + key + ":" + result.car[key];
-                    // }
-                    //document.getElementById("output").innerText = JSON.stringify(result);
-                    getAll();
+                    getAll(); //On succesful response, run getAll() to repopulate table with newly added movie
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
@@ -133,22 +155,30 @@
             });
         }
 
-        function updateCar(){
-            car = {"reg":"123XYZ", "make":"UpdateMake", "model":"UpdateMod", "price":10101};
+        function updateMovie(){
+            movieID = document.getElementById("movie-id");
+            ratingID = document.getElementById("rating-id");
+            var movie_json = {};
+            var movie_form = document.getElementById("cu-form");
+            movie_json.MovieID = movie_form.querySelector("input[name='movie-id']").value;
+            movie_json.RatingID = movie_form.querySelector("select[name='movie-rating']").value;
+            movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
+            console.log(JSON.stringify(movie_json));
             $.ajax({
-                "url": "http://127.0.0.1:5000/cars/" + encodeURI(car.reg),
+                "url": "http://127.0.0.1:5000/movies",
                 "method":"PUT",
-                "data":JSON.stringify(car),
+                "data":JSON.stringify(movie_json),
                 "datatype":"JSON",
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
-                    console.log(result.car.make);
+                    //console.log(result.car.make);
                     // for (var key in result.car){
                     //     console.log(key);
                     //     document.getElementById("output").innerText = JSON.stringify(result);
                     // }
-                    document.getElementById("output").innerText = JSON.stringify(result);
+                    //document.getElementById("output").innerText = JSON.stringify(result);
+                    getAll();
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
@@ -176,16 +206,61 @@
             });
         }
 
-        function movieForm(){
+        //Simple function to cleanup form for updating or adding movies, added due to updateSpecificMovieForm function as this prepopulates form
+        function cleanupMovieForm(){
+            movieidfield = document.getElementById("movie-id");
+            movieidfield.value="";
+            movieidfield.disabled=false;
+            ratingfield = document.getElementById("movie-rating");
+            ratingfield.value="";
+            titlefield = document.getElementById("movie-title");
+            titlefield.value="";
+        }
+
+        function addMovieForm(){
+            cleanupMovieForm();
             document.getElementById("btn-div").style.display="none";
 			document.getElementById("movie-table").style.display="none";
 			document.getElementById("cu-form").style.display="block"; //make form visible
 
-			document.getElementById('create-label').style.display="inline" //make span visible
-			document.getElementById('update-label').style.display="none"
+			document.getElementById('create-label').style.display="inline"; //make span visible
+			document.getElementById('update-label').style.display="none";
 
-			document.getElementById('do-create-btn').style.display="block" //make create button visible
-			document.getElementById('do-update-btn').style.display="none"
+			document.getElementById('do-create-btn').style.display="block"; //make create button visible
+			document.getElementById('do-update-btn').style.display="none";
+        }
+
+        function updateMovieForm(){
+            cleanupMovieForm();
+            document.getElementById("btn-div").style.display="none";
+			document.getElementById("movie-table").style.display="none";
+			document.getElementById("cu-form").style.display="block"; //make form visible
+
+			document.getElementById('create-label').style.display="none"; //make span visible
+			document.getElementById('update-label').style.display="inline";
+
+			document.getElementById('do-create-btn').style.display="none"; //make create button visible
+			document.getElementById('do-update-btn').style.display="block";
+        }
+
+        function updateSpecificMovieForm(btn){
+            parentrow = btn.parentNode.parentNode;
+            movieidfield = document.getElementById("movie-id");
+            movieidfield.value=parentrow.id;
+            movieidfield.disabled=true;
+            ratingfield = document.getElementById("movie-rating");
+            ratingfield.value=parentrow.cells[2].innerText;
+            titlefield = document.getElementById("movie-title");
+            titlefield.value=parentrow.cells[1].innerText;
+            document.getElementById("btn-div").style.display="none";
+			document.getElementById("movie-table").style.display="none";
+			document.getElementById("cu-form").style.display="block"; //make form visible
+
+			document.getElementById('create-label').style.display="none"; //make span visible
+			document.getElementById('update-label').style.display="inline";
+
+			document.getElementById('do-create-btn').style.display="none"; //make create button visible
+			document.getElementById('do-update-btn').style.display="block";
         }
     </script>
 </html>
