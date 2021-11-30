@@ -54,13 +54,25 @@ class Moviedao:
     #Adds single movie to movies table
     def add_movie(self, values):
         with self.get_connect_db() as conn:
-            cursor = conn.cursor()
+            try:
+                cursor = conn.cursor()
 
-            cursor.execute(queries.insert_movie, values)
-            #print(cursor.statement)
-            conn.commit()
-            rowcount = cursor.rowcount
-            return rowcount
+                cursor.execute(queries.insert_movie, values)
+                #print(cursor.statement)
+                conn.commit()
+                rowcount = cursor.rowcount
+                return rowcount
+            except mysql.connector.IntegrityError as e:
+                print("Hit an integrity error, meaning a movieID was trying to be used more than once")
+                print(f"Detailed Error Message:\n{e}")
+                return "IntegrityError"
+            except mysql.connector.Error as e:
+                print(f"Hit the follow mysql error: {e}")
+                print(cursor.statement)
+                return str(e)
+            except Exception as e:
+                print(f"Hit some non-specific error: {e}")
+                return str(e)
 
     #Update existing movie in Movies table
     def update_movie(self, values):

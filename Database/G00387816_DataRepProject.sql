@@ -15,9 +15,9 @@ INSERT Movies(MovieID,Title,RatingID) VALUES(3, "12 Angry Men", 1);
 INSERT Movies(MovieID,Title,RatingID) VALUES(4, "The Lighthouse", 1);
 INSERT Movies(MovieID,Title,RatingID) VALUES(5, "Rocky Horror Picture Show", 3);
 INSERT Movies(MovieID,Title,RatingID) VALUES(6, "Blade Runner 2049", 2);
-INSERT Movies(MovieID,Title,RatingID) VALUES(7, "The Room", 3);
-INSERT Movies(MovieID,Title,RatingID) VALUES(8, "The Phantom Menace", 6);
-INSERT Movies(MovieID,Title,RatingID) VALUES(9, "The Force Awakens", 7);
+INSERT Movies(MovieID,Title,RatingID) VALUES(7, "The Room", 7);
+INSERT Movies(MovieID,Title,RatingID) VALUES(8, "The Phantom Menace", 5);
+INSERT Movies(MovieID,Title,RatingID) VALUES(9, "The Force Awakens", 6);
 
 
 

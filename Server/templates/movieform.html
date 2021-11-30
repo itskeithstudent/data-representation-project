@@ -147,6 +147,9 @@
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
+                    if(result=="IntegrityError"){
+                        alert("You tried to use an existing MovieID, try again with a new one.")
+                    }
                     getAll(); //On succesful response, run getAll() to repopulate table with newly added movie
                 },
                 "error":function(xhr,status,error){
