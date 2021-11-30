@@ -4,12 +4,24 @@ CREATE DATABASE G00387816_DataRepProject;
 USE G00387816_DataRepProject;
 
 CREATE TABLE Movies(
-    MovieID int NOT NULL,
+    MovieID int NOT NULL PRIMARY KEY,
     Title varchar(255) NULL,
     RatingID int NOT NULL
 );
 
 INSERT Movies(MovieID,Title,RatingID) VALUES(1, "7 Samurai", 1);
+INSERT Movies(MovieID,Title,RatingID) VALUES(2, "Rashomon", 1);
+INSERT Movies(MovieID,Title,RatingID) VALUES(3, "12 Angry Men", 1);
+INSERT Movies(MovieID,Title,RatingID) VALUES(4, "The Lighthouse", 1);
+INSERT Movies(MovieID,Title,RatingID) VALUES(5, "Rocky Horror Picture Show", 3);
+INSERT Movies(MovieID,Title,RatingID) VALUES(6, "Blade Runner 2049", 2);
+INSERT Movies(MovieID,Title,RatingID) VALUES(7, "The Room", 3);
+INSERT Movies(MovieID,Title,RatingID) VALUES(8, "The Phantom Menace", 6);
+INSERT Movies(MovieID,Title,RatingID) VALUES(9, "The Force Awakens", 7);
+
+
+
+
 
 CREATE TABLE Genre(
     MovieID int NOT NULL,
