@@ -27,7 +27,7 @@
 
     <div name="form-div" id="cu-form" style="display:none">
         <h2><span id="create-label">Create a</span> <span id="update-label">Update this</span> Movie</h2>
-        Movie ID <input type="text" name="movie-id" id="movie-id"><br/>
+        Movie ID <input type="number" pattern="[0-9]" name="movie-id" id="movie-id"><br/>
         Rating <select name="movie-rating" id="movie-rating">
             </select><br/>
         Title <input type="text" name="movie-title" id="movie-title"><br/>
@@ -181,12 +181,9 @@
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
-                    //console.log(result.car.make);
-                    // for (var key in result.car){
-                    //     console.log(key);
-                    //     document.getElementById("output").innerText = JSON.stringify(result);
-                    // }
-                    //document.getElementById("output").innerText = JSON.stringify(result);
+                    if(result=="0"){
+                        alert("You updated a MovieID that doesn't exist so nothing was done, use an existing MovieID or add a new one and update that!");
+                    }
                     getAll();
                 },
                 "error":function(xhr,status,error){

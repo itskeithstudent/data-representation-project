@@ -68,7 +68,7 @@ class Moviedao:
                 return "IntegrityError"
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
-                print(cursor.statement)
+                #print(cursor.statement)
                 return str(e)
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
@@ -86,7 +86,6 @@ class Moviedao:
                 return rowcount
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
-                print(cursor.statement)
                 return str(e)
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
@@ -103,7 +102,7 @@ class Moviedao:
                 return rowcount
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
-                print(cursor.statement)
+                #print(cursor.statement)
                 return str(e)
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
@@ -123,7 +122,7 @@ class Moviedao:
                 return row_results
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
-                print(cursor.statement)
+                #print(cursor.statement)
                 return str(e)
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
