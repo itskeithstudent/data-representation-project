@@ -44,13 +44,11 @@ class Moviedao:
             cursor = conn.cursor()
             cursor.execute(queries.select_all_movie)
             results = cursor.fetchall()
-            #print(cursor.statement)
             column_names = [i[0] for i in cursor.description]
             row_results = []
             for row in results:
                 row_dict = dict(zip(column_names,row))
                 row_results.append(row_dict)
-            #print(row_results)
             return row_results
 
     #Adds single movie to movies table
@@ -91,6 +89,26 @@ class Moviedao:
                 conn.commit() #save result back to database
                 rowcount = cursor.rowcount
                 return rowcount
+            except mysql.connector.Error as e:
+                print(f"Hit the follow mysql error: {e}")
+                print(cursor.statement)
+                return str(e)
+            except Exception as e:
+                print(f"Hit some non-specific error: {e}")
+                return str(e)
+
+    def get_ratings(self):
+        with self.get_connect_db() as conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute(queries.select_all_ratings)
+                results = cursor.fetchall()
+                column_names = [i[0] for i in cursor.description]
+                row_results = []
+                for row in results:
+                    row_dict = dict(zip(column_names,row))
+                    row_results.append(row_dict)
+                return row_results
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
                 print(cursor.statement)

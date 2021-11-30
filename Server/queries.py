@@ -14,6 +14,7 @@ Title=%s,
 RatingID=%s
 WHERE MovieID=%s;'''
 
-
 delete_movie = '''DELETE FROM MOVIES
 WHERE MovieID=%s;'''
+
+select_all_ratings = "SELECT * FROM RATING;"
