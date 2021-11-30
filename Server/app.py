@@ -86,5 +86,10 @@ def delete_movie():
     response = movie_dao.delete_movie(movie_id)
     return str(response)
 
+@app.route('/ratings', methods=['GET'])
+def get_ratings():
+    query_results = movie_dao.get_ratings()
+    return jsonify(data=query_results)
+
 if __name__ == '__main__':
     app.run(debug=True)
