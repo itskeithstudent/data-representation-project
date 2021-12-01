@@ -19,17 +19,11 @@ movie_dao = moviedao.Moviedao()
 def default_page():
     return render_template('movieform.html')
 
-'''
-    TODO - Add html to GET data and populate a table with response
-'''
 @app.route('/movies', methods=['GET'])
 def get_movie():
     query_results = movie_dao.get_all_movies()
     return jsonify(data=query_results)
 
-'''
-    TODO - Add html form to add a new film, like done in labs
-'''
 @app.route('/movies', methods=['POST'])
 def add_movie():
     print(request.json)
@@ -51,9 +45,6 @@ def add_movie():
     row_added = movie_dao.add_movie((movie_id, movie_title, rating_id))
     return str(row_added)
 
-'''
-    TODO - Add POST and DELETE methods for different functions and add html functionality
-'''
 @app.route('/movies', methods=['PUT'])
 def update_movie():
     if not request.json:
