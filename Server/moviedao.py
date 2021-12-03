@@ -22,7 +22,8 @@ class Moviedao:
             password=conf.mysql['password'],
             database=conf.mysql['database'],
             pool_name=conf.mysql['default_pool_name'],
-            pool_size=conf.mysql['default_pool_size']
+            pool_size=conf.mysql['default_pool_size'],
+            port=conf.mysql['port']
         )
         return conn
 
