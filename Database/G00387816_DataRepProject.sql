@@ -50,4 +50,4 @@ INSERT Rating(RatingID, Rating) VALUES(4, "Good");
 INSERT Rating(RatingID, Rating) VALUES(5, "Bad");
 INSERT Rating(RatingID, Rating) VALUES(6, "Meh");
 INSERT Rating(RatingID, Rating) VALUES(7, "Drivel");
-INSERT Rating(RatingID, Rating) VALUES(7, "So bad it's good!");
+INSERT Rating(RatingID, Rating) VALUES(8, "So bad it's good!");
