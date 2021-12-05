@@ -36,15 +36,16 @@
 
     </div>
     <script>
+        host = window.location.origin;
         //init function is for doing an initial set up to retrieve information from the Flask Server
         //  It loads in the available rating options and populates a dropdown list with these values, for use when adding new movie
         function init(){
             $.ajax({
-                "url": "http://127.0.0.1:5000/ratings",
+                "url": host+"/ratings",
                 "method":"GET",
                 "data":"",
                 "datatype":"JSON",
-                contentType: "application/json; charset=utf-8",
+                "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     ratingselect = document.getElementById("movie-rating")
                     console.log(result);
@@ -77,11 +78,11 @@
 			document.getElementById('do-create-btn').style.display="none" //make create button visible
 			document.getElementById('do-update-btn').style.display="none"
             $.ajax({
-                "url": "http://127.0.0.1:5000/movies",
+                "url": host+"/movies",
                 "method":"GET",
                 "data":"",
                 "datatype":"JSON",
-                contentType: "application/json; charset=utf-8",
+                "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
                     for (item of result.data){
@@ -146,7 +147,7 @@
             movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
             console.log(JSON.stringify(movie_json));
             $.ajax({
-                "url": "http://127.0.0.1:5000/movies",
+                "url": host+"/movies",
                 "method":"POST",
                 "data":JSON.stringify(movie_json),
                 "datatype":"JSON",
@@ -174,7 +175,7 @@
             movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
             console.log(JSON.stringify(movie_json));
             $.ajax({
-                "url": "http://127.0.0.1:5000/movies",
+                "url": host+"/movies",
                 "method":"PUT",
                 "data":JSON.stringify(movie_json),
                 "datatype":"JSON",
@@ -196,7 +197,7 @@
             parent_row = btn.parentNode.parentNode;
             movie = {'MovieID': parent_row.id};
             $.ajax({
-                "url": "http://127.0.0.1:5000/movies",
+                "url": host+"/movies",
                 "method":"DELETE",
                 "data":JSON.stringify(movie),
                 "datatype":"JSON",
