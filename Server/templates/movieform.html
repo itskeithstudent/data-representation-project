@@ -8,21 +8,32 @@
 			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 			crossorigin="anonymous">
+    <link rel="stylesheet"
+    href="custom.css"
+    crossorigin="anonymous">
     <style>
         div {padding: 10}
+
     </style>
 </head>
-    <div id="btn-div">
+    <div id="btn-div" class="header">
         <button onclick="getAll()">Get all movies</button>
         <button onclick="addMovieForm()">Add new movie</button>
         <button onclick="updateMovieForm()">Update movie</button>
     </div>
     <div id="output">
-        <table id="movie-table" border=2>
-            <tr>
-                <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th>
-            </tr>
-        </table>
+        <div id="movie-div">
+            <table id="movie-table" border=2 style="display:none">
+                <tr class="custtablehead">
+                    <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th>
+                </tr>
+            </table>
+        </div>
+        <div id="prompt-div">
+            <p class="intro-text">Click "Get all movies" to load in a table of data</p>
+            <p class="intro-text">Click "Add new movie" to get a form for entering new movies</p>
+            <p class="intro-text">Click "Update movie" to get a form for updating a movie</p>
+        </div>
     </div>
 
     <div name="form-div" id="cu-form" style="display:none">
@@ -66,6 +77,7 @@
         init();
 
         function getAll(){
+            document.getElementById("output").style.display="block";
             document.getElementById("btn-div").style.display="block";
 			document.getElementById("movie-table").style.display="table";
             document.getElementById("movie-table").innerHTML="";
@@ -77,6 +89,22 @@
 
 			document.getElementById('do-create-btn').style.display="none" //make create button visible
 			document.getElementById('do-update-btn').style.display="none"
+
+            //check for presence of one of the p tags to add on loading table, if doesn't exist create, otherwise it exists so don't re-add
+            if (document.getElementById("p-message-update") == null){
+                var pmessage_update = document.createElement("p");
+                pmessage_update.innerText = "To update a specific movie in table click 'Update'";
+                pmessage_update.id = "p-message-update"
+                pmessage_update.className = "intro-text";
+                var pmessage_delete = document.createElement("p");
+                pmessage_delete.innerText = "To delete a specific movie in table click 'Delete'";
+                pmessage_delete.id = "p-message-delete"
+                pmessage_delete.className = "intro-text";
+                prompt_div = document.getElementById('prompt-div');
+                prompt_div.appendChild(pmessage_update);
+                prompt_div.appendChild(pmessage_delete);
+            }
+
             $.ajax({
                 "url": host+"/movies",
                 "method":"GET",
@@ -100,6 +128,7 @@
             var table = document.getElementById('movie-table'); //grab the table to insert data to
 			var row = table.insertRow(-1); //append row to end of table
             cell = document.createElement("th");
+            row.className="custtablehead";
             cell.innerHTML = "Movie ID";
             row.appendChild(cell);
             cell = document.createElement("th");
@@ -111,7 +140,6 @@
             cell = document.createElement("th");
             cell.innerHTML = "Rating";
             row.appendChild(cell);
-            
         }
 
         function addMovieToTable(movie){
@@ -129,7 +157,7 @@
             var cell3 = row.insertCell(3);
 			cell3.innerHTML = movie.Rating;
 			var cell4 = row.insertCell(4);
-			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">update</button></td>'
+			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">Update</button></td>'
 			var cell5 = row.insertCell(5);
 			cell5.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
 
@@ -226,9 +254,10 @@
 
         function addMovieForm(){
             cleanupMovieForm();
+            document.getElementById("output").style.display="none";
             document.getElementById("btn-div").style.display="none";
 			document.getElementById("movie-table").style.display="none";
-			document.getElementById("cu-form").style.display="block"; //make form visible
+			document.getElementById("cu-form").style.display="inline-grid"; //make form visible
 
 			document.getElementById('create-label').style.display="inline"; //make span visible
 			document.getElementById('update-label').style.display="none";
@@ -239,9 +268,10 @@
 
         function updateMovieForm(){
             cleanupMovieForm();
+            document.getElementById("output").style.display="none";
             document.getElementById("btn-div").style.display="none";
 			document.getElementById("movie-table").style.display="none";
-			document.getElementById("cu-form").style.display="block"; //make form visible
+			document.getElementById("cu-form").style.display="inline-grid"; //make form visible
 
 			document.getElementById('create-label').style.display="none"; //make span visible
 			document.getElementById('update-label').style.display="inline";
