@@ -29,12 +29,17 @@
     place-items: center;
     border: 8px solid;
     padding: 1rem;
-    border-image: linear-gradient(45deg, lightblue, lightgreen) 1;
+    background-color: lightgray;
+    border-image: linear-gradient(45deg, red, yellow) 1;
 }
 
 .intro-text{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:teal;
+    font-style: block;
+    font-weight: bold;
     border-radius: 5px;
     border: 2px dashed;
     padding-right: 5px;
+    padding-left: 5px;
 }

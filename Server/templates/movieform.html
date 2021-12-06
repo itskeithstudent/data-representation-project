@@ -2,7 +2,7 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>
-        Test get all!
+        Data Representation project - G00387816
     </title>
     <link rel="stylesheet"
 			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -30,9 +30,9 @@
             </table>
         </div>
         <div id="prompt-div">
-            <p class="intro-text">Click "Get all movies" to load in a table of data</p>
-            <p class="intro-text">Click "Add new movie" to get a form for entering new movies</p>
-            <p class="intro-text">Click "Update movie" to get a form for updating a movie</p>
+            <p class="intro-text">&#8604; Click "Get all movies" to load in a table of data</p>
+            <p class="intro-text">&#8604; Click "Add new movie" to get a form for entering new movies</p>
+            <p class="intro-text">&#8604; Click "Update movie" to get a form for updating a movie</p>
         </div>
     </div>
 
@@ -93,11 +93,11 @@
             //check for presence of one of the p tags to add on loading table, if doesn't exist create, otherwise it exists so don't re-add
             if (document.getElementById("p-message-update") == null){
                 var pmessage_update = document.createElement("p");
-                pmessage_update.innerText = "To update a specific movie in table click 'Update'";
+                pmessage_update.innerHTML = "&#8592; To update a specific movie in table click 'Update'";
                 pmessage_update.id = "p-message-update"
                 pmessage_update.className = "intro-text";
                 var pmessage_delete = document.createElement("p");
-                pmessage_delete.innerText = "To delete a specific movie in table click 'Delete'";
+                pmessage_delete.innerHTML = "&#8592; To delete a specific movie in table click 'Delete'";
                 pmessage_delete.id = "p-message-delete"
                 pmessage_delete.className = "intro-text";
                 prompt_div = document.getElementById('prompt-div');
@@ -289,9 +289,10 @@
             ratingfield.value=parentrow.cells[2].innerText;
             titlefield = document.getElementById("movie-title");
             titlefield.value=parentrow.cells[1].innerText;
+            document.getElementById("output").style.display="none";
             document.getElementById("btn-div").style.display="none";
 			document.getElementById("movie-table").style.display="none";
-			document.getElementById("cu-form").style.display="block"; //make form visible
+			document.getElementById("cu-form").style.display="inline-grid"; //make form visible
 
 			document.getElementById('create-label').style.display="none"; //make span visible
 			document.getElementById('update-label').style.display="inline";
