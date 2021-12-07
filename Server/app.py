@@ -4,6 +4,9 @@ from flask import Flask, jsonify,  request, abort, make_response
 from flask.templating import render_template
 from flask_cors import CORS
 
+import requests
+import apiconfig
+
 import moviedao
 #import dbconfig as conf
 
@@ -80,6 +83,18 @@ def delete_movie():
 def get_ratings():
     query_results = movie_dao.get_ratings()
     return jsonify(data=query_results)
+
+@app.route('/imdbdetails', methods=['GET'])
+def get_film_details():
+    if not request.json:
+        abort(400)
+    if "Title" in request.json:
+        title = request.json['Title']
+        params = [title, apiconfig.omdb_api_key]
+        request.get(apiconfig.omdb_url,params)
+        print(request.text)
+        return jsonify(data=request.text)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

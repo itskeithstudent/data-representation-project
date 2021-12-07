@@ -70,7 +70,7 @@ class Moviedao:
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
                 #print(cursor.statement)
-                return str(e)
+                return "SomeOtherError"
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
                 return str(e)
