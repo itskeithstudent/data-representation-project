@@ -1,7 +1,7 @@
 #!flask/bin/python
 from os import error
 from flask import Flask, jsonify,  request, abort, make_response
-from flask.templating import render_template
+from flask.templating import render_template, render_template_string
 from flask_cors import CORS
 
 import requests
@@ -84,16 +84,16 @@ def get_ratings():
     query_results = movie_dao.get_ratings()
     return jsonify(data=query_results)
 
-@app.route('/imdbdetails', methods=['GET'])
+@app.route('/imdbdetails', methods=['POST'])
 def get_film_details():
     if not request.json:
         abort(400)
     if "Title" in request.json:
         title = request.json['Title']
-        params = [title, apiconfig.omdb_api_key]
-        request.get(apiconfig.omdb_url,params)
-        print(request.text)
-        return jsonify(data=request.text)
+        params = {"t":title, "apikey":apiconfig.omdb_api_key}
+        response = requests.get(url=apiconfig.omdb_url,params=params)
+        print(response.json())
+        return jsonify(data=response.json())
 
 
 if __name__ == '__main__':

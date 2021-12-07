@@ -23,9 +23,9 @@
     </div>
     <div id="output">
         <div id="movie-div">
-            <table id="movie-table" style="display:none">
+            <table id="movie-table" border=2 style="display:none">
                 <tr class="custtablehead">
-                    <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th>
+                    <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th><th></th>
                 </tr>
             </table>
         </div>
@@ -142,8 +142,15 @@
             row.appendChild(cell);
             cell = document.createElement("th");
             cell.innerHTML = "";
+            cell.style.borderRight = "none";
             row.appendChild(cell);
             cell = document.createElement("th");
+            cell.innerHTML = "";
+            cell.style.borderRight = "none";
+            cell.style.borderLeft = "none";
+            row.appendChild(cell);
+            cell = document.createElement("th");
+            cell.style.borderLeft = "none";
             cell.innerHTML = "";
             row.appendChild(cell);
         }
@@ -166,6 +173,8 @@
 			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">Update</button></td>'
 			var cell5 = row.insertCell(5);
 			cell5.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
+            var cell5 = row.insertCell(6);
+			cell5.innerHTML = '<td><button onclick="imdbRequestSpecificMovie(this)">Search IMDB</button></td>'
 
 		}
 
@@ -309,5 +318,25 @@
 			document.getElementById('do-create-btn').style.display="none"; //make create button visible
 			document.getElementById('do-update-btn').style.display="block";
         }
+
+        function imdbRequestSpecificMovie(btn){
+            parentrow = btn.parentNode.parentNode;
+            movietitle=parentrow.cells[1].innerText;
+            movie = {'Title': movietitle};
+            $.ajax({
+                "url": host+"/imdbdetails",
+                "method":"POST",
+                "data":JSON.stringify(movie),
+                "datatype":"JSON",
+                "contentType": "application/json; charset=utf-8",
+                "success":function(result){
+                    console.log(result);
+                    console.log(result.data.imdbRating);
+                },
+                "error":function(xhr,status,error){
+                    console.log("You hit Error: " + status+ "Msg: " + error);
+                }
+            });
+        };
     </script>
 </html>
