@@ -23,7 +23,7 @@
     </div>
     <div id="output">
         <div id="movie-div">
-            <table id="movie-table" border=2 style="display:none">
+            <table id="movie-table" style="display:none">
                 <tr class="custtablehead">
                     <th>Movie ID</th><th>Title</th><th>Rating ID</th><th>Rating</th><th></th><th></th>
                 </tr>
@@ -140,6 +140,12 @@
             cell = document.createElement("th");
             cell.innerHTML = "Rating";
             row.appendChild(cell);
+            cell = document.createElement("th");
+            cell.innerHTML = "";
+            row.appendChild(cell);
+            cell = document.createElement("th");
+            cell.innerHTML = "";
+            row.appendChild(cell);
         }
 
         function addMovieToTable(movie){
@@ -184,6 +190,9 @@
                     console.log(result);
                     if(result=="IntegrityError"){
                         alert("You tried to use an existing MovieID, try again with a new one.")
+                    }
+                    if(result=="SomeOtherError"){
+                        alert("You probably entered a value or set of values that don't work, please try again.\nNote: MovieID must have a value and be numeric, Rating should be selected, Title is not necessary but reccomended.")
                     }
                     getAll(); //On succesful response, run getAll() to repopulate table with newly added movie
                 },
