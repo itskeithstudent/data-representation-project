@@ -3,6 +3,8 @@ CREATE DATABASE G00387816_DataRepProject;
 
 USE G00387816_DataRepProject;
 
+
+#Main table to be displayed
 CREATE TABLE Movies(
     MovieID int NOT NULL PRIMARY KEY,
     Title varchar(255) NULL,
@@ -19,25 +21,7 @@ INSERT Movies(MovieID,Title,RatingID) VALUES(7, "The Room", 7);
 INSERT Movies(MovieID,Title,RatingID) VALUES(8, "The Phantom Menace", 5);
 INSERT Movies(MovieID,Title,RatingID) VALUES(9, "The Force Awakens", 6);
 
-
-
-
-
-CREATE TABLE Genre(
-    MovieID int NOT NULL,
-    Genre varchar(255) NULL
-);
-
-INSERT Genre(MovieID, Genre) VALUES(1, "Action");
-INSERT Genre(MovieID, Genre) VALUES(2, "Horror");
-INSERT Genre(MovieID, Genre) VALUES(3, "Thriller");
-INSERT Genre(MovieID, Genre) VALUES(4, "Noir");
-INSERT Genre(MovieID, Genre) VALUES(5, "Science Fiction");
-INSERT Genre(MovieID, Genre) VALUES(6, "Existentialism");
-INSERT Genre(MovieID, Genre) VALUES(7, "Indie");
-INSERT Genre(MovieID, Genre) VALUES(7, "Absurdist");
-INSERT Genre(MovieID, Genre) VALUES(7, "Space Opera");
-
+#joins with Movies on RatingID, idea is Rating table holds value for rating while movies just holds the
 CREATE TABLE Rating(
     RatingID int NOT NULL,
     Rating varchar(255) NULL
