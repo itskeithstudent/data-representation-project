@@ -1,4 +1,4 @@
-#output {
+.lineargraddiv {
     display: grid;
     place-items: center;
     border: 8px solid;
@@ -6,6 +6,11 @@
     background-color: whitesmoke;
     border-image: linear-gradient(90deg, teal, yellowgreen) 1;
     overflow: hidden;
+}
+
+#movie-info-div {
+    place-items: unset;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #btn-div {
