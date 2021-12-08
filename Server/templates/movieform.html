@@ -9,8 +9,8 @@
 			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 			crossorigin="anonymous">
     <link rel="stylesheet"
-    href="custom.css"
-    crossorigin="anonymous">
+            href="custom.css"
+            crossorigin="anonymous">
     <style>
         div {padding: 10}
 
@@ -89,14 +89,13 @@
                 "datatype":"JSON",
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
+                    //on success populate the ratings dropdown (which is initially hidden)
                     ratingselect = document.getElementById("movie-rating")
-                    console.log(result);
                     for (item of result.data){
-                        console.log(item);
                         var option = document.createElement('option');
-                        option.value = item.RatingID;
-                        option.innerHTML = item.Rating;
-                        ratingselect.appendChild(option);
+                        option.value = item.RatingID; //option value is what will later be actually used when adding or updating
+                        option.innerHTML = item.Rating; //displayed option is the text rating not the id
+                        ratingselect.appendChild(option); //add option to ratingselect dropdown
                     }
                 },
                 "error":function(xhr,status,error){
@@ -106,7 +105,8 @@
         }
         //Immediately call init function to do initial GET request
         init();
-
+        //getAll function update's descriptive text on first call when table should be present on page
+        // also sends GET request to populate table
         function getAll(){
             document.getElementById("output").style.display="block";
             document.getElementById("btn-div").style.display="block";
@@ -136,7 +136,7 @@
                 prompt_div.appendChild(pmessage_update);
                 prompt_div.appendChild(pmessage_delete);
             }
-
+            //send GET request to pull all movies, on success send each item to addMovieToTable
             $.ajax({
                 "url": host+"/movies",
                 "method":"GET",
@@ -156,10 +156,12 @@
             });
         };
 
+        //addColumnToTable, creates column headers for table
         function addColumnToTable(){
             var table = document.getElementById('movie-table'); //grab the table to insert data to
 			var row = table.insertRow(-1); //append row to end of table
             cell = document.createElement("th");
+            //add cells to top row
             row.className="custtablehead";
             cell.innerHTML = "Movie ID";
             row.appendChild(cell);
@@ -172,6 +174,7 @@
             cell = document.createElement("th");
             cell.innerHTML = "Rating";
             row.appendChild(cell);
+            //For last 3 cells, hide left/right borders to make buttons grouped
             cell = document.createElement("th");
             cell.innerHTML = "";
             cell.style.borderRight = "none";
@@ -187,11 +190,10 @@
             row.appendChild(cell);
         }
 
+        //addMovieToTable() add's single row to table and set's inner content
         function addMovieToTable(movie){
 			var table = document.getElementById('movie-table'); //grab the table to insert data to
 			var row = table.insertRow(-1); //append row to end of table
-            // console.log(movie);
-            // console.log(movie.MovieID);
 			row.setAttribute('id', movie.MovieID);
 			var cell0 = row.insertCell(0);
 			cell0.innerHTML = movie.MovieID;
@@ -202,25 +204,25 @@
             var cell3 = row.insertCell(3);
 			cell3.innerHTML = movie.Rating;
 			var cell4 = row.insertCell(4);
-			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">Update</button></td>'
+            //add buttons, use of 'this' keyword to keep track of what row button was clicked on
+			cell4.innerHTML = '<td><button onclick="updateSpecificMovieForm(this)">Update</button></td>';
 			var cell5 = row.insertCell(5);
-			cell5.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>'
+			cell5.innerHTML = '<td><button onclick="deleteMovie(this)">Delete</button></td>';
             var cell5 = row.insertCell(6);
-			cell5.innerHTML = '<td><button onclick="imdbRequestSpecificMovie(this)">Search IMDB</button></td>'
-
+			cell5.innerHTML = '<td><button onclick="imdbRequestSpecificMovie(this)">Search IMDB</button></td>';
 		}
 
         //createMovie get's called to add a new row to movie table, it creates it's json request using values from "cu-form"
         function createMovie(){
-            //movie = {"MovieID":"10", "Title":"Test", "RatingID":"2"};
             movieID = document.getElementById("movie-id");
             ratingID = document.getElementById("rating-id");
             var movie_json = {};
             var movie_form = document.getElementById("cu-form");
+            //grab values from form inputs
             movie_json.MovieID = movie_form.querySelector("input[name='movie-id']").value;
             movie_json.RatingID = movie_form.querySelector("select[name='movie-rating']").value;
             movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
-            console.log(JSON.stringify(movie_json));
+            //ajax POST request to add movie
             $.ajax({
                 "url": host+"/movies",
                 "method":"POST",
@@ -228,14 +230,14 @@
                 "datatype":"JSON",
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
-                    console.log(result);
+                    //may get error message back from flask api endpoint, if so show an alert
                     if(result=="IntegrityError"){
                         alert("You tried to use an existing MovieID, try again with a new one.")
                     }
                     if(result=="SomeOtherError"){
                         alert("You probably entered a value or set of values that don't work, please try again.\nNote: MovieID must have a value and be numeric, Rating should be selected, Title is not necessary but reccomended.")
                     }
-                    getAll(); //On succesful response, run getAll() to repopulate table with newly added movie
+                    getAll(); //On succesful response, run getAll() to repopulate table with newly added movie and make add form hidden
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
@@ -243,15 +245,18 @@
             });
         }
 
+        //updateMovie() sends PUT request to update a movie - may update a specific movie if picked from table row, however if
+        // using button at top of page, it asks user for movieID so this may not work if movieID doesn't exist
         function updateMovie(){
             movieID = document.getElementById("movie-id");
             ratingID = document.getElementById("rating-id");
             var movie_json = {};
             var movie_form = document.getElementById("cu-form");
+            //grab values from form inputs
             movie_json.MovieID = movie_form.querySelector("input[name='movie-id']").value;
             movie_json.RatingID = movie_form.querySelector("select[name='movie-rating']").value;
             movie_json.Title = movie_form.querySelector("input[name='movie-title']").value;
-            console.log(JSON.stringify(movie_json));
+            //ajax PUT request
             $.ajax({
                 "url": host+"/movies",
                 "method":"PUT",
@@ -260,10 +265,11 @@
                 "contentType": "application/json; charset=utf-8",
                 "success":function(result){
                     console.log(result);
+                    //if no rows affected on flask end, then no row was updated
                     if(result=="0"){
                         alert("You updated a MovieID that doesn't exist so nothing was done, use an existing MovieID or add a new one and update that!");
                     }
-                    getAll();
+                    getAll();//On succesful response, run getAll() to repopulate table with newly added movie and make add form hidden
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
@@ -271,9 +277,10 @@
             });
         }
 
+        //deleteMovie() delete's a specific movie based on what table row was clicked (table row id is same as movieid)
         function deleteMovie(btn){
-            parent_row = btn.parentNode.parentNode;
-            movie = {'MovieID': parent_row.id};
+            parent_row = btn.parentNode.parentNode; //get row button was clicked from
+            movie = {'MovieID': parent_row.id}; //use id of the row for json obj sent in DELETE API request
             $.ajax({
                 "url": host+"/movies",
                 "method":"DELETE",
@@ -291,7 +298,7 @@
             });
         }
 
-        //Simple function to cleanup form for updating or adding movies, added due to updateSpecificMovieForm function as this prepopulates form
+        //cleanupMovieForm tidies up form, clearing values which may have been entered, also hides table and other elements
         function cleanupMovieForm(){
             movieidfield = document.getElementById("movie-id");
             movieidfield.value="";
@@ -308,7 +315,9 @@
 			document.getElementById("cu-form").style.display="inline-grid"; //make form visible
         }
 
+        //addMovieForm() sets up form for adding a movie
         function addMovieForm(){
+            //tidy up movieform and hide other elements
             cleanupMovieForm();
 
 			document.getElementById('create-label').style.display="inline"; //make span visible
@@ -318,16 +327,19 @@
 			document.getElementById('do-update-btn').style.display="none";
         }
 
+        //addMovieForm() sets up form for updating a movie
         function updateMovieForm(){
+            //tidy up movieform and hide other elements
             cleanupMovieForm();
 
 			document.getElementById('create-label').style.display="none"; //make span visible
 			document.getElementById('update-label').style.display="inline";
 
-			document.getElementById('do-create-btn').style.display="none"; //make create button visible
-			document.getElementById('do-update-btn').style.display="block";
+			document.getElementById('do-create-btn').style.display="none";
+			document.getElementById('do-update-btn').style.display="block"; //make update button visible
         }
 
+        //updateSpecificMovieForm() called from a table row, add's a movieid to the form and makes field disabled so can't be edited
         function updateSpecificMovieForm(btn){
             parentrow = btn.parentNode.parentNode;
             movieidfield = document.getElementById("movie-id");
@@ -349,6 +361,9 @@
 			document.getElementById('do-update-btn').style.display="block";
         }
 
+        //imdbRequestSpecificMovie() sends post request to flask server to search imdb and retrieve data relating to a film based off title
+        // if found and get's a response which doesn't contain "Error" as a key, then it displays info, otherwise it displays a prompt
+        // that movie could not be found
         function imdbRequestSpecificMovie(btn){
             var parentrow = btn.parentNode.parentNode;
             var movietitle=parentrow.cells[1].innerText;
@@ -373,11 +388,13 @@
                         intro_text.style.display="block";
                         intro_text.style.color="red";
                         intro_text.style.fontWeight="bold";
+                        //show warning prompt in red
                         intro_text.innerHTML = "Sorry that movie was not found, likely the name entered and what is on IMDB differs.";
-
+                        //hide the table for displaying movie details from imdb
                         movie_info_table.style.display = "none";
                     }
                     else{
+                        //else a response that was wanted is returned
                         intro_text.style.display = "none";
                         movie_info_table.style.display = "block";
                         movie_name.innerHTML = result.data.Title;
@@ -393,8 +410,7 @@
                         movie_plot.innerHTML = result.data.Plot;
                         movie_plot.style.display = "block";
                     }
-                    console.log(result);
-                    console.log(result.data.imdbRating);
+                    //console.log(result.data.imdbRating);
                 },
                 "error":function(xhr,status,error){
                     console.log("You hit Error: " + status+ "Msg: " + error);
