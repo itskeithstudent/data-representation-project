@@ -50,12 +50,32 @@
     <div id="movie-info-div" class="lineargraddiv">
         <h3>IMDB info</h3>
         <span id="intro-text">After loading movies above, click 'Search IMDB' to retrieve information about the movie by title.</span>
-        <span id="movie-name"></span>
-        <span id="imdb-rating"></span>
-        <span id="movie-runtime"></span>
-        <span id="movie-genre"></span>
-        <span id="movie-year"></span>
-        <span id="movie-plot"></span>
+        <table id="movie-info-tbl" style="display: none;">
+            <tr>
+                <td>Title: </td>
+                <td id="movie-name"></td>
+            </tr>
+            <tr>
+                <td>IMDB Rating: </td>
+                <td id="imdb-rating"></td>
+            </tr>
+            <tr>
+                <td>Runtime: </td>
+                <td id="movie-runtime"></td>
+            </tr>
+            <tr>
+                <td>Genre: </td>
+                <td id="movie-genre"></td>
+            </tr>
+            <tr>
+                <td>Release Year: </td>
+                <td id="movie-year"></td>
+            </tr>
+            <tr>
+                <td>Plot Synopsis: </td>
+                <td id="movie-plot"></td>
+            </tr>
+        </table>
     </div>
     <script>
         host = window.location.origin;
@@ -333,13 +353,14 @@
             var parentrow = btn.parentNode.parentNode;
             var movietitle=parentrow.cells[1].innerText;
             var movie = {'Title': movietitle};
-            var intro_text_span = document.getElementById("intro-text");
-            var movie_name_span = document.getElementById("movie-name");
-            var imdb_rating_span = document.getElementById("imdb-rating");
-            var movie_runtime_span = document.getElementById("movie-runtime");
-            var movie_genre_span = document.getElementById("movie-genre");
-            var movie_year_span = document.getElementById("movie-year");
-            var movie_plot_span = document.getElementById("movie-plot");
+            var movie_info_table = document.getElementById("movie-info-tbl");
+            var intro_text = document.getElementById("intro-text");
+            var movie_name = document.getElementById("movie-name");
+            var imdb_rating = document.getElementById("imdb-rating");
+            var movie_runtime = document.getElementById("movie-runtime");
+            var movie_genre = document.getElementById("movie-genre");
+            var movie_year = document.getElementById("movie-year");
+            var movie_plot = document.getElementById("movie-plot");
             $.ajax({
                 "url": host+"/imdbdetails",
                 "method":"POST",
@@ -349,32 +370,28 @@
                 "success":function(result){
                     //got succesful response back but movie not found
                     if("Error" in result.data){
-                        intro_text_span.style.display="block";
-                        intro_text_span.style.color="red";
-                        intro_text_span.style.fontWeight="bold";
-                        intro_text_span.innerHTML = "Sorry that movie was not found, likely the name entered and what is on IMDB differs.";
+                        intro_text.style.display="block";
+                        intro_text.style.color="red";
+                        intro_text.style.fontWeight="bold";
+                        intro_text.innerHTML = "Sorry that movie was not found, likely the name entered and what is on IMDB differs.";
 
-                        movie_name_span.style.display = "none";
-                        imdb_rating_span.style.display = "none";
-                        movie_runtime_span.style.display = "none";
-                        movie_genre_span.style.display = "none";
-                        movie_year_span.style.display = "none";
-                        movie_plot_span.style.display = "none";
+                        movie_info_table.style.display = "none";
                     }
                     else{
-                        intro_text_span.style.display = "none";
-                        movie_name_span.innerHTML = "Title:" + result.data.Title;
-                        movie_name_span.style.display = "block";
-                        imdb_rating_span.innerHTML = "IMDB Rating: " + result.data.imdbRating;
-                        imdb_rating_span.style.display = "block";
-                        movie_runtime_span.innerHTML = "Runtime: " +result.data.Runtime;
-                        movie_runtime_span.style.display = "block";
-                        movie_genre_span.innerHTML = "Genre: " +result.data.Genre;
-                        movie_genre_span.style.display = "block";
-                        movie_year_span.innerHTML = "Year Released: " + result.data.Year;
-                        movie_year_span.style.display = "block";
-                        movie_plot_span.innerHTML = "Plot: " + result.data.Plot;
-                        movie_plot_span.style.display = "block";
+                        intro_text.style.display = "none";
+                        movie_info_table.style.display = "block";
+                        movie_name.innerHTML = result.data.Title;
+                        movie_name.style.display = "block";
+                        imdb_rating.innerHTML = result.data.imdbRating;
+                        imdb_rating.style.display = "block";
+                        movie_runtime.innerHTML = result.data.Runtime;
+                        movie_runtime.style.display = "block";
+                        movie_genre.innerHTML = result.data.Genre;
+                        movie_genre.style.display = "block";
+                        movie_year.innerHTML = result.data.Year;
+                        movie_year.style.display = "block";
+                        movie_plot.innerHTML = result.data.Plot;
+                        movie_plot.style.display = "block";
                     }
                     console.log(result);
                     console.log(result.data.imdbRating);
