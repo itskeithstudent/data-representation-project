@@ -2,16 +2,28 @@
 
 A 'live' version of this project can be seen on [Python Anywhere](http://g00387816.pythonanywhere.com/)
 
-REST API server using Flask and with a backend Database to access.
-This project can be ran locally via the terminal, launched via docker-compose and can be accessed on [Python Anywhere](http://g00387816.pythonanywhere.com/).
+The aim of this project is to create a REST API server using Flask with a html frontend and a backend mysql Database which has CRUD operations performed against it based off the type of API request sent to the flask server via the webpage.
 
-This project demonstrates a web front-end which sends API requests to a flask server, which in turn retrieves data from a MySQL database.
+## Project Highlights
+This project has three different ways of running:
+1. Running via pythonanywhere
+2. Running via the terminal to spin locally
+3. Running via docker containers, to make the project agnostic of where it could be deployed
+
+It presents the user with a webpage for loading in details about movies and allows the end user, to create, update, delete and read this information, further to this, the user can search IMDB for details about a particular movie presented to them.
+Providing content for this webpage is a backend mysql database with two tables which are retrieved via ajax API call's from the webpage, the full range of CRUD operations can be performed on the html page that flask renders, which interacts with the Movies table (the Ratings table is supposed to be a hardcoded set of textual ratings, so it shouldn't be modifiable).
+For the IMDB search functionality, this is achieved with a third party api called omdb, upon getting a POST request from a user which contains the title of the movie they would like to retrieve it takes the movie title from the request.json and sends that using a GET request to omdb (this is authenticated using an api key, which is hardcoded), what is returned from this api then populates a text section on the webpage. 
+
+Efforts were put in to make sure the webpage was visually consistent and nice looking (subjectively!).
+
+Packaging up this project in a set of docker containers was a personal aim of mine, I have previously dabbled with docker, but never spun up dependent containers e.g. a flask container which retrieves data on a mysql container across the same network but can also reach external sites.
+
 
 ## Project Content
 
 * ./Database/ - This folder contains .sql script for creating the required database along with creating tables and adding some data to these tables.
 * ./Server/ - Contains Python code for the flask server, includes a sub directory ./templates/ which contains html page to be returned by the flask server.
-* ./ - The base folder contains non technical parts of the project; this Readme, a .txt document for some example cURL commands, a requirements.txt for installing any required python packages, a set of docker related files for spinning up flask and mysql containers.
+* ./ - The base folder contains non moving parts of the project; this Readme, a .txt document for some example cURL commands, a requirements.txt for installing any required python packages, a set of docker related files for spinning up flask and mysql containers.
 
 
 ## Installing required Python packages
