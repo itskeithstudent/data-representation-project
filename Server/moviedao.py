@@ -8,13 +8,15 @@ class Moviedao:
         initializes using connection to mysql server with details stored in dbconfig conf variable
         function:
             __initialize_connect_db() - function immediately called by __init__ to set up to database with pooling (name mangled as should only be called within class)
-            get_connect_db - function called in each, function for interacting with database, leverages connection pool, returns connection object
+            get_connect_db - function called in each function for interacting with database, leverages connection pool, returns connection object
             get_all_movies() - queries database movies table and returns all column names and rows
             add_movie() - inserts new row to movies table, if ID doesn't already exist, returns rows added
             update_movie() - updates an existing row in movies table, returns rows affected
+            delete_movie() - deletes row from movie table
+            get_ratings() - queries ratings table, returning all columns
             __repr__ - prints summary of the class and it's connection string except password
     '''
-
+    #initial connection function
     def __initialize_connect_db(self):
         conn = mysql.connector.connect(
             host=conf.mysql['host'],
@@ -26,7 +28,7 @@ class Moviedao:
             port=conf.mysql['port']
         )
         return conn
-
+    #connection function used in other class functions
     def get_connect_db(self):
         conn = mysql.connector.connect(
             pool_name=conf.mysql['default_pool_name'],
@@ -37,7 +39,7 @@ class Moviedao:
     def __init__(self):
         #create connection and immediately close, connection pool will re-reference this later
         conn = self.__initialize_connect_db()
-        conn.close()
+        conn.close() #close conn after creating it, will use get_connect_db for future connections, taking advantage of connection pool
 
     #Gets all movies from movies table
     def get_all_movies(self):
@@ -48,20 +50,19 @@ class Moviedao:
             column_names = [i[0] for i in cursor.description]
             row_results = []
             for row in results:
-                row_dict = dict(zip(column_names,row))
-                row_results.append(row_dict)
-            return row_results
+                row_dict = dict(zip(column_names,row)) #zip column names with row data, put in dict
+                row_results.append(row_dict) #append dict to list
+            return row_results #return list of dict's
 
     #Adds single movie to movies table
     def add_movie(self, values):
         with self.get_connect_db() as conn:
             try:
                 cursor = conn.cursor()
-
                 cursor.execute(queries.insert_movie, values)
                 #print(cursor.statement)
                 conn.commit()
-                rowcount = cursor.rowcount
+                rowcount = cursor.rowcount #rowcount == 1 means that single row has been added
                 return rowcount
             except mysql.connector.IntegrityError as e:
                 print("Hit an integrity error, meaning a movieID was trying to be used more than once")
@@ -69,7 +70,6 @@ class Moviedao:
                 return "IntegrityError"
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
-                #print(cursor.statement)
                 return "SomeOtherError"
             except Exception as e:
                 print(f"Hit some non-specific error: {e}")
@@ -109,6 +109,7 @@ class Moviedao:
                 print(f"Hit some non-specific error: {e}")
                 return str(e)
 
+    #get all rows from ratings table
     def get_ratings(self):
         with self.get_connect_db() as conn:
             try:
@@ -118,9 +119,9 @@ class Moviedao:
                 column_names = [i[0] for i in cursor.description]
                 row_results = []
                 for row in results:
-                    row_dict = dict(zip(column_names,row))
-                    row_results.append(row_dict)
-                return row_results
+                    row_dict = dict(zip(column_names,row)) #zip column names with row data, put in dict
+                    row_results.append(row_dict) #append dict to list
+                return row_results #return list of dict's
             except mysql.connector.Error as e:
                 print(f"Hit the follow mysql error: {e}")
                 #print(cursor.statement)
