@@ -60,3 +60,9 @@
     border:0px;
     background-image:linear-gradient(270deg, teal, yellowgreen);
 }
+
+h3{
+    text-align: center;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
