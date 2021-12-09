@@ -4,6 +4,13 @@ A 'live' version of this project can is hosted at this link on [Python Anywhere]
 
 The aim of this project is to create a REST API server using Flask with a html frontend and a backend mysql Database which has CRUD operations performed against it based off the type of API request sent to the flask server via the webpage - This was achieved by creating a simple movie rating website, which also retrieves data from IMDB.
 
+Quick jump to section:
+[Project Highlights](#project-highlights)
+
+[Project Content](#project-content)
+
+[Running the project in Docker containers](#running-the-project-in-docker-containers)
+
 ## Project Highlights
 This project can be ran/interacted with in three ways:
 1. Running via pythonanywhere
@@ -11,7 +18,9 @@ This project can be ran/interacted with in three ways:
 3. Running via docker containers, to make the project agnostic of where it could be deployed
 
 It presents a user with a webpage for loading in details about movies and allows the end user, to create, update, delete and read this information, further to this, the user can search IMDB for details about a particular movie presented to them.
+
 Providing content for this webpage is a backend mysql database with two tables which are retrieved via ajax API call's from the webpage, the full range of CRUD operations can be performed on the html page that flask renders, which interacts with the Movies table (the Ratings table is supposed to be a hardcoded set of textual ratings, so it shouldn't be modifiable).
+
 For the IMDB search functionality, this is achieved with a third party api called omdb, upon getting a POST request from a user which contains the title of the movie they would like to retrieve it takes the movie title from the request.json and sends that using a GET request to omdb (this is authenticated using an api key, which is hardcoded), what is returned from this api then populates a text section on the webpage. 
 
 Efforts were put in to make sure the webpage was visually consistent and nice looking (subjectively!).
@@ -61,7 +70,7 @@ The external API used is (OMDB)[http://www.omdbapi.com/], which is itself retrie
 Getting a key for this API you must first sign up, however this is free to do so and the API key used in this project could be used by others.
 
 
-## Python Anywhere hosting
+1qw2e34
 The project itself is hosted over on Python Anywhere, and can be accessed at this url: http://g00387816.pythonanywhere.com/
 It is kept up to date by performing a git pull command within a bash terminal after making any changes to this repository.
 
